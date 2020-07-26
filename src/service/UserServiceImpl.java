@@ -109,6 +109,4 @@ public class UserServiceImpl implements UserService {
         directory.mkdir();
         File[] files = directory.listFiles();
     }
-
-
 }
