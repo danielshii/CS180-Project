@@ -22,7 +22,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getCommentsByPost(UUID postUuid) {
         File file = new File(postUuid.toString());
-        List<Comment> comments = new ArrayList<Comment>();
+        List<Comment> comments;
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file.getAbsolutePath()))) {
             Post post = (Post) inputStream.readObject();
             comments = post.getComments();
@@ -40,6 +40,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setUuid(UUID.randomUUID());
         comment.setPostUuid(postUuid);
         comment.setCreatedDate(new Date());
+        storeComment(comment);
         return comment;
     }
 
