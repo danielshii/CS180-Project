@@ -1,6 +1,6 @@
 package service;
 
-import exception.UserNotAuthorizedException;
+import enumeration.ContentType;
 import model.Comment;
 import model.Post;
 
@@ -11,6 +11,13 @@ import java.util.List;
 import java.util.UUID;
 
 public class CommentServiceImpl implements CommentService {
+
+    private FileService fileService;
+
+    public CommentServiceImpl() {
+        this.fileService = new FileServiceImpl();
+    }
+
     @Override
     public List<Comment> getCommentsByPost(UUID postUuid) {
         File file = new File(postUuid.toString());
@@ -36,33 +43,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(UUID uuid, String username) {
-        File path = new File("comments");
-        boolean b = path.mkdir();
-        File file = new File(path.getAbsolutePath() + "/" + uuid.toString());
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file.getAbsolutePath()))) {
-            Comment comment = (Comment) inputStream.readObject();
-            if (!comment.getCreatedUsername().equals(username)) {
-                throw new UserNotAuthorizedException();
-            } else if (file.delete()) {
-
-            }
-        } catch (Exception e) {
-
-        }
+    public void deleteComment(Comment comment, String username) {
+        fileService.deleteFile(ContentType.COMMENT, comment.getUuid().toString(), username);
     }
 
     @Override
     public void storeComment(Comment comment) {
-        File file = new File("comments");
-        boolean b = file.mkdir();
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file.getAbsolutePath() + "/" + comment.getUuid().toString(), false))) {
-            outputStream.writeObject(comment);
-            //outputStream.writeUTF("\n");
-            outputStream.flush();
-        } catch (IOException e) {
-
-        }
+        fileService.saveCommentToFile(comment);
     }
 
     @Override
@@ -74,7 +61,7 @@ public class CommentServiceImpl implements CommentService {
             try (ObjectInputStream inputStream = new ObjectInputStream((new FileInputStream(f.getAbsolutePath())))) {
                 Comment comment = (Comment) inputStream.readObject();
                 if (comment.getCreatedUsername().equals(username)) {
-                    deleteComment(comment.getUuid(), username);
+                    deleteComment(comment, username);
                 }
             } catch (Exception e) {
 

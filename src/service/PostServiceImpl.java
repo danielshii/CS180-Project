@@ -11,6 +11,12 @@ import java.util.UUID;
 
 public class PostServiceImpl implements PostService {
 
+    private FileService fileService;
+
+    public PostServiceImpl() {
+        this.fileService = new FileServiceImpl();
+    }
+
     @Override
     public List<Post> getAllPosts() {
         List<Post> posts = new ArrayList<Post>();
@@ -54,20 +60,8 @@ public class PostServiceImpl implements PostService {
         post.setCreatedUsername(createdUsername);
         post.setUuid(UUID.randomUUID());
         post.setCreatedDate(new Date());
+        fileService.savePostToFile(post);
         return post;
-    }
-
-    @Override
-    public void storePost(Post post) {
-        File file = new File("posts");
-        boolean b = file.mkdir();
-        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file.getAbsolutePath() + "/" + post.getUuid().toString(), false))) {
-            outputStream.writeObject(post);
-            //outputStream.writeUTF("\n");
-            outputStream.flush();
-        } catch (IOException e) {
-
-        }
     }
 
     @Override
@@ -80,19 +74,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePost(UUID uuid, String username) {
-        File path = new File("posts");
-        boolean b = path.mkdir();
-        File file = new File(path.getAbsolutePath() + "/" + uuid.toString());
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file.getAbsolutePath()))) {
-            Post post = (Post) inputStream.readObject();
-            if (!post.getCreatedUsername().equals(username)) {
-                throw new UserNotAuthorizedException();
-            } else if (file.delete()) {
 
-            }
-        } catch (Exception e) {
-
-        }
     }
 
     @Override
@@ -106,7 +88,7 @@ public class PostServiceImpl implements PostService {
                 throw new UserNotAuthorizedException();
             } else {
                 post = new Post(new Date(), content, createdUsername);
-                storePost(post);
+                fileService.savePostToFile(post);
 
             }
         } catch (Exception e) {
