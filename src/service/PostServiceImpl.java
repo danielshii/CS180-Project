@@ -5,10 +5,7 @@ import exception.UserNotAuthorizedException;
 import model.Post;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class PostServiceImpl implements PostService {
 
@@ -24,6 +21,7 @@ public class PostServiceImpl implements PostService {
         File directory = new File("posts");
         boolean b = directory.mkdir();
         File[] files = directory.listFiles();
+        Arrays.sort(files, Comparator.comparingLong(File::lastModified));
         for (File f : files) {
             try (ObjectInputStream inputStream = new ObjectInputStream((new FileInputStream(f.getAbsolutePath())))) {
                 Post post = (Post) inputStream.readObject();
