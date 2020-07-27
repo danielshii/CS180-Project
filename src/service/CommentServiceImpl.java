@@ -1,6 +1,7 @@
 package service;
 
 import enumeration.ContentType;
+import exception.PostNotFoundException;
 import model.Comment;
 import model.Post;
 
@@ -26,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
             Post post = (Post) inputStream.readObject();
             comments = post.getComments();
         } catch (Exception e) {
-
+            throw new PostNotFoundException();
         }
         return comments;
     }
@@ -51,7 +52,7 @@ public class CommentServiceImpl implements CommentService {
     public void storeComment(Comment comment) {
         fileService.saveCommentToFile(comment);
     }
-
+/*
     @Override
     public void deleteCommentsByUser(String username) {
         File directory = new File("comments");
@@ -67,5 +68,5 @@ public class CommentServiceImpl implements CommentService {
 
             }
         }
-    }
+    }*/
 }

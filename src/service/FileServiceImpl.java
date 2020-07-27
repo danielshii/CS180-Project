@@ -108,7 +108,17 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void deleteAllFilesByUser(User user) {
-
+        File file = getFolder(COMMENT_FOLDER);
+        File[] commentFiles = file.listFiles();
+        for (File f : commentFiles) {
+            deleteFile(ContentType.COMMENT, f.getName(), user.getUsername());
+        }
+        file = getFolder(POST_FOLDER);
+        File[] postFiles = file.listFiles();
+        for (File f : postFiles) {
+            deleteFile(ContentType.POST, f.getName(), user.getUsername());
+        }
+        deleteFile(ContentType.USER, user.getUsername(), user.getUsername());
     }
 
     private File getFolder(String folderName) {
