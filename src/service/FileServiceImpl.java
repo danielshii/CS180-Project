@@ -1,6 +1,6 @@
 package service;
 
-import enumeration.ContentType;
+import enumeration.ObjectType;
 import exception.CommentNotFoundException;
 import exception.PostNotFoundException;
 import exception.UserNotAuthorizedException;
@@ -15,6 +15,19 @@ public class FileServiceImpl implements FileService {
     private static final String USER_FOLDER = "users";
     private static final String POST_FOLDER = "posts";
     private static final String COMMENT_FOLDER = "comments";
+
+    @Override
+    public File getFile(ObjectType objectType, String fileName) {
+        File directory = new File(objectType.getFolderName());
+        directory.mkdir();
+        File[] files = directory.listFiles();
+        for (File file : files) {
+            if (file.getName().equals(fileName)) {
+                return file;
+            }
+        }
+        return null;
+    }
 
     @Override
     public void saveUserToFile(User user) {
@@ -53,10 +66,10 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void deleteFile(ContentType contentType, String fileName, String username) {
-        File path = getFolder(contentType.getFolderName());
+    public void deleteFile(ObjectType objectType, String fileName, String username) {
+        File path = getFolder(objectType.getFolderName());
         File file = new File(path.getAbsolutePath() + "/" + fileName);
-        switch (contentType) {
+        switch (objectType) {
             case USER:
                 if (file.delete()) {
                 } else {
@@ -111,14 +124,14 @@ public class FileServiceImpl implements FileService {
         File file = getFolder(COMMENT_FOLDER);
         File[] commentFiles = file.listFiles();
         for (File f : commentFiles) {
-            deleteFile(ContentType.COMMENT, f.getName(), user.getUsername());
+            deleteFile(ObjectType.COMMENT, f.getName(), user.getUsername());
         }
         file = getFolder(POST_FOLDER);
         File[] postFiles = file.listFiles();
         for (File f : postFiles) {
-            deleteFile(ContentType.POST, f.getName(), user.getUsername());
+            deleteFile(ObjectType.POST, f.getName(), user.getUsername());
         }
-        deleteFile(ContentType.USER, user.getUsername(), user.getUsername());
+        deleteFile(ObjectType.USER, user.getUsername(), user.getUsername());
     }
 
     private File getFolder(String folderName) {

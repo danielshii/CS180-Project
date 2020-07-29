@@ -1,6 +1,6 @@
 package service;
 
-import enumeration.ContentType;
+import enumeration.ObjectType;
 import exception.UserNotAuthorizedException;
 import model.Post;
 
@@ -73,7 +73,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public void deletePost(UUID uuid, String username) {
-        fileService.deleteFile(ContentType.POST, uuid.toString(), username);
+        fileService.deleteFile(ObjectType.POST, uuid.toString(), username);
     }
 
     @Override

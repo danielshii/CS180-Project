@@ -1,15 +1,19 @@
 package service;
 
-import enumeration.ContentType;
+import enumeration.ObjectType;
 import model.Comment;
 import model.Post;
 import model.User;
 
+import java.io.File;
+
 public interface FileService {
+    File getFile(ObjectType objectType, String fileName);
+
     void saveUserToFile(User user);
     void savePostToFile(Post post);
     void saveCommentToFile(Comment comment);
 
-    void deleteFile(ContentType contentType, String fileName, String username);
+    void deleteFile(ObjectType objectType, String fileName, String username);
     void deleteAllFilesByUser(User user);
 }
