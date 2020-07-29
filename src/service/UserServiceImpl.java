@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(User user) {
-        fileService.deleteFile(ContentType.USER, user.getUsername(), user.getUsername());
+        fileService.deleteAllFilesByUser(user);
     }
 
     @Override
