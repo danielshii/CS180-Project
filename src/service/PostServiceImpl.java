@@ -9,7 +9,7 @@ import java.util.*;
 
 public class PostServiceImpl implements PostService {
 
-    private FileService fileService;
+    private final FileService fileService;
 
     public PostServiceImpl() {
         this.fileService = new FileServiceImpl();
@@ -17,9 +17,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getAllPosts() {
-        List<Post> posts = new ArrayList<Post>();
+        List<Post> posts = new ArrayList<>();
         File directory = new File("posts");
-        boolean b = directory.mkdir();
         File[] files = directory.listFiles();
         Arrays.sort(files, Comparator.comparingLong(File::lastModified));
         for (File f : files) {
@@ -35,9 +34,8 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getPostsByUser(String username) {
-        List<Post> posts = new ArrayList<Post>();
+        List<Post> posts = new ArrayList<>();
         File directory = new File("posts");
-        boolean b = directory.mkdir();
         File[] files = directory.listFiles();
         for (File f : files) {
             try (ObjectInputStream inputStream = new ObjectInputStream((new FileInputStream(f.getAbsolutePath())))) {
@@ -79,7 +77,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public void editPost(UUID uuid, String content, String createdUsername) {
         File path = new File("posts");
-        boolean b = path.mkdir();
         File file = new File(path.getAbsolutePath() + "/" + uuid.toString());
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file.getAbsolutePath()))) {
             Post post = (Post) inputStream.readObject();

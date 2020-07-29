@@ -13,11 +13,11 @@ import java.util.Objects;
 
 public class UserServiceImpl implements UserService {
 
-    private FileService fileService;
+    private final FileService fileService;
 
-    private PostService postService;
+    private final PostService postService;
 
-    private CommentService commentService;
+    private final CommentService commentService;
 
     public UserServiceImpl() {
         this.fileService = new FileServiceImpl();

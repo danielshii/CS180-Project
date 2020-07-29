@@ -1,14 +1,4 @@
-
-import exception.DuplicateUsernameException;
-import exception.InvalidUserException;
-import exception.UserNotFoundException;
-import jdk.nashorn.internal.scripts.JO;
-import model.Post;
 import model.User;
-import service.*;
-
-import javax.swing.*;
-import java.util.ArrayList;
 
 public class App implements Runnable {
     private User currentUser;

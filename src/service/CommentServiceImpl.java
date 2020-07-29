@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class CommentServiceImpl implements CommentService {
 
-    private FileService fileService;
+    private final FileService fileService;
 
     public CommentServiceImpl() {
         this.fileService = new FileServiceImpl();
