@@ -3,6 +3,7 @@ package service;
 import enumeration.ObjectType;
 import exception.DuplicateUsernameException;
 import exception.InvalidUserException;
+import exception.UserNotAuthorizedException;
 import exception.UserNotFoundException;
 import model.User;
 
@@ -56,6 +57,7 @@ public class UserServiceImpl implements UserService {
         // postService.delete
 
         fileService.deleteFile(ObjectType.USER, user.getUsername(), user.getUsername());
+        fileService.deleteAllFilesByUser(user);
     }
 
     @Override
