@@ -1,10 +1,7 @@
 package service;
 
 import enumeration.ObjectType;
-import exception.CommentNotFoundException;
-import exception.PostNotFoundException;
-import exception.UserNotAuthorizedException;
-import exception.UserNotFoundException;
+import exception.*;
 import model.Comment;
 import model.Post;
 import model.User;
@@ -18,10 +15,10 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public File getFile(ObjectType objectType, String fileName) {
-        File directory = new File(objectType.getFolderName());
+        final File directory = new File(objectType.getFolderName());
         directory.mkdir();
-        File[] files = directory.listFiles();
-        for (File file : files) {
+        final File[] files = directory.listFiles();
+        for (final File file : files) {
             if (file.getName().equals(fileName)) {
                 return file;
             }
@@ -31,7 +28,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void saveUserToFile(User user) {
-        File folder = getFolder(USER_FOLDER);
+        final File folder = getFolder(USER_FOLDER);
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(folder.getAbsolutePath() + "/" + user.getUsername(), false))) {
             outputStream.writeObject(user);
             //outputStream.writeUTF("\n");
@@ -43,7 +40,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void savePostToFile(Post post) {
-        File folder = getFolder(POST_FOLDER);
+        final File folder = getFolder(POST_FOLDER);
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(folder.getAbsolutePath() + "/" + post.getUuid().toString(), false))) {
             outputStream.writeObject(post);
             //outputStream.writeUTF("\n");
@@ -55,7 +52,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void saveCommentToFile(Comment comment) {
-        File folder = getFolder(COMMENT_FOLDER);
+        final File folder = getFolder(COMMENT_FOLDER);
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(folder.getAbsolutePath() + "/" + comment.getUuid().toString(), false))) {
             outputStream.writeObject(comment);
             //outputStream.writeUTF("\n");
@@ -67,8 +64,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void deleteFile(ObjectType objectType, String fileName, String username) {
-        File path = getFolder(objectType.getFolderName());
-        File file = new File(path.getAbsolutePath() + "/" + fileName);
+        final File path = getFolder(objectType.getFolderName());
+        final File file = new File(path.getAbsolutePath() + "/" + fileName);
         switch (objectType) {
             case USER:
                 if (file.delete()) {
@@ -78,9 +75,8 @@ public class FileServiceImpl implements FileService {
                 break;
 
             case POST:
-
                 try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file.getAbsolutePath()))) {
-                    Post post = (Post) inputStream.readObject();
+                    final Post post = (Post) inputStream.readObject();
                     if (!post.getCreatedUsername().equals(username)) {
                         throw new UserNotAuthorizedException();
                     } else {
@@ -98,7 +94,7 @@ public class FileServiceImpl implements FileService {
 
             case COMMENT:
                 try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file.getAbsolutePath()))) {
-                    Comment comment = (Comment) inputStream.readObject();
+                    final Comment comment = (Comment) inputStream.readObject();
                     if (!comment.getCreatedUsername().equals(username)) {
                         throw new UserNotAuthorizedException();
                     } else {
@@ -121,22 +117,40 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void deleteAllFilesByUser(User user) {
-        File file = getFolder(COMMENT_FOLDER);
-        File[] commentFiles = file.listFiles();
-        for (File f : commentFiles) {
-            deleteFile(ObjectType.COMMENT, f.getName(), user.getUsername());
-        }
-        file = getFolder(POST_FOLDER);
-        File[] postFiles = file.listFiles();
-        for (File f : postFiles) {
-            deleteFile(ObjectType.POST, f.getName(), user.getUsername());
-        }
+        // Delete all Comment files
+        deleteAllPostOrCommentFilesByUser(user, ObjectType.COMMENT);
+
+        // Delete all Post files
+        deleteAllPostOrCommentFilesByUser(user, ObjectType.POST);
+
+        // Delete the User file
         deleteFile(ObjectType.USER, user.getUsername(), user.getUsername());
     }
 
     private File getFolder(String folderName) {
-        File file = new File(folderName);
-        boolean b = file.mkdir();
+        final File file = new File(folderName);
+        file.mkdir();
         return file;
+    }
+
+    private void deleteAllPostOrCommentFilesByUser(User user, ObjectType objectType) {
+        File folder = null;
+        switch (objectType) {
+            case POST:
+                folder = getFolder(POST_FOLDER);
+                break;
+
+            case COMMENT:
+                folder = getFolder(COMMENT_FOLDER);
+                break;
+
+            default:
+                throw new InvalidObjectTypeException(objectType);
+        }
+
+        final File[] files = folder.listFiles();
+        for (final File file : files) {
+            deleteFile(objectType, file.getName(), user.getUsername());
+        }
     }
 }

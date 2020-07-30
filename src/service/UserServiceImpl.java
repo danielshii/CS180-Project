@@ -3,7 +3,6 @@ package service;
 import enumeration.ObjectType;
 import exception.DuplicateUsernameException;
 import exception.InvalidUserException;
-import exception.UserNotAuthorizedException;
 import exception.UserNotFoundException;
 import model.User;
 
@@ -16,14 +15,8 @@ public class UserServiceImpl implements UserService {
 
     private final FileService fileService;
 
-    private final PostService postService;
-
-    private final CommentService commentService;
-
     public UserServiceImpl() {
         this.fileService = new FileServiceImpl();
-        this.postService = new PostServiceImpl();
-        this.commentService = new CommentServiceImpl();
     }
 
     @Override
@@ -50,13 +43,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(User user) {
-        // TODO: Delete all comments and posts by this user
-
-        // commentService.delete
-
-        // postService.delete
-
-        fileService.deleteFile(ObjectType.USER, user.getUsername(), user.getUsername());
         fileService.deleteAllFilesByUser(user);
     }
 
