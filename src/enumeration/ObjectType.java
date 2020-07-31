@@ -1,13 +1,13 @@
 package enumeration;
 
-public enum ContentType {
+public enum ObjectType {
     USER("users"),
     POST("posts"),
     COMMENT("comments");
 
     private String folderName;
 
-    ContentType(String folderName) {
+    ObjectType(String folderName) {
         this.folderName = folderName;
     }
 

@@ -1,19 +1,18 @@
 package service;
 
-import enumeration.ContentType;
+import enumeration.ObjectType;
 import exception.PostNotFoundException;
 import model.Comment;
 import model.Post;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 public class CommentServiceImpl implements CommentService {
 
-    private FileService fileService;
+    private final FileService fileService;
 
     public CommentServiceImpl() {
         this.fileService = new FileServiceImpl();
@@ -46,7 +45,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void deleteComment(Comment comment, String username) {
-        fileService.deleteFile(ContentType.COMMENT, comment.getUuid().toString(), username);
+        fileService.deleteFile(ObjectType.COMMENT, comment.getUuid().toString(), username);
     }
 
     @Override
