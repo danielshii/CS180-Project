@@ -16,4 +16,5 @@ public interface FileService {
 
     void deleteFile(ObjectType objectType, String fileName, String username);
     void deleteAllFilesByUser(User user);
+    File getFolder(String folderName);
 }

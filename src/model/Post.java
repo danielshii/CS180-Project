@@ -1,13 +1,10 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 
-public class Post {
+public class Post implements Serializable {
 
     private static final class SerializationProxy implements Serializable {
         static final long serialUuid;
@@ -18,7 +15,7 @@ public class Post {
         List<Comment> comments;
 
         static {
-            serialUuid = 0xBEEFBEEF;
+            serialUuid = 0xCAFEBABE;
         }
 
         SerializationProxy(Post post) {
@@ -31,7 +28,7 @@ public class Post {
         }
 
         Object readResolve() {
-            return new Post(this.createdDate, this.content, this.createdUsername);
+            return new Post(this.uuid, this.createdDate, this.content, this.createdUsername, this.comments);
         }
     }
 
@@ -49,11 +46,12 @@ public class Post {
     public Post() {
     }
 
-    public Post(Date createdDate, String content, String createdUsername) {
+    public Post(UUID uuid, Date createdDate, String content, String createdUsername, List<Comment> comments) {
+        this.uuid = uuid;
         this.createdDate = createdDate;
         this.content = content;
         this.createdUsername = createdUsername;
-
+        this.comments = comments;
     }
 
     public UUID getUuid() {
@@ -96,13 +94,12 @@ public class Post {
         this.comments = comments;
     }
 
-    private Object writeReplace()
-    {
+    private Object writeReplace() {
         return new SerializationProxy(this);
     }
 
     @Override
     public String toString() {
-        return String.format("%s || Posted by %s on %s", content, createdUsername, createdDate.toString());
+        return String.format("<html>%s<br/>Posted by %s on %s", content, createdUsername, createdDate.toString());
     }
 }

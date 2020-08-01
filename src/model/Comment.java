@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Comment {
+public class Comment implements Serializable {
 
     private static final class SerializationProxy implements Serializable {
         static final long serialUuid;
@@ -16,7 +16,7 @@ public class Comment {
         String createdUsername;
 
         static {
-            serialUuid = 0xBEEFBEEF;
+            serialUuid = 0xBEFEBEFE;
         }
 
         SerializationProxy(Comment comment) {
@@ -29,7 +29,7 @@ public class Comment {
         }
 
         Object readResolve() {
-            return new Comment(this.postUuid, this.createdDate, this.content, this.createdUsername);
+            return new Comment(this.uuid, this.postUuid, this.createdDate, this.content, this.createdUsername);
         }
     }
 
@@ -47,7 +47,8 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(UUID postUuid, Date createdDate, String content, String createdUsername) {
+    public Comment(UUID uuid, UUID postUuid, Date createdDate, String content, String createdUsername) {
+        this.uuid = uuid;
         this.postUuid = postUuid;
         this.createdDate = createdDate;
         this.content = content;
@@ -96,8 +97,8 @@ public class Comment {
 
     @Override
     public String toString() {
-        String string = "Posted by: %s at %s\n%s\n\n";
-        return String.format(string, createdUsername, createdDate, content);
+        String string = "<html>%s<br/>Posted by: %s at %s</html>";
+        return String.format(string, content, createdUsername, createdDate);
     }
 
     private Object writeReplace() {

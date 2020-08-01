@@ -127,7 +127,8 @@ public class FileServiceImpl implements FileService {
         deleteFile(ObjectType.USER, user.getUsername(), user.getUsername());
     }
 
-    private File getFolder(String folderName) {
+    @Override
+    public File getFolder(String folderName) {
         final File file = new File(folderName);
         file.mkdir();
         return file;

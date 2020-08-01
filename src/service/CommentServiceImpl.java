@@ -6,6 +6,7 @@ import model.Comment;
 import model.Post;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -19,14 +20,21 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getCommentsByPost(UUID postUuid) {
-        File file = new File(postUuid.toString());
-        List<Comment> comments;
-        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file.getAbsolutePath()))) {
-            Post post = (Post) inputStream.readObject();
-            comments = post.getComments();
-        } catch (Exception e) {
-            throw new PostNotFoundException();
+    public List<Comment> getCommentsByPost(Post post) {
+        List<Comment> comments = new ArrayList<>();
+
+        File commentFolder = fileService.getFolder("comments");
+        File[] commentFiles = commentFolder.listFiles();
+        for(File f : commentFiles)
+        {
+            try (ObjectInputStream inputStream = new ObjectInputStream((new FileInputStream(f.getAbsolutePath())))) {
+                Comment comment = (Comment) inputStream.readObject();
+                if (comment.getPostUuid().equals(post.getUuid())) {
+                    comments.add(comment);
+                }
+            } catch (Exception e) {
+
+            }
         }
         return comments;
     }

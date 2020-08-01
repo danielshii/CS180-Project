@@ -19,14 +19,17 @@ public class PostServiceImpl implements PostService {
     public List<Post> getAllPosts() {
         List<Post> posts = new ArrayList<>();
         File directory = new File("posts");
+        directory.mkdir();
         File[] files = directory.listFiles();
         Arrays.sort(files, Comparator.comparingLong(File::lastModified));
+
+
         for (File f : files) {
             try (ObjectInputStream inputStream = new ObjectInputStream((new FileInputStream(f.getAbsolutePath())))) {
                 Post post = (Post) inputStream.readObject();
                 posts.add(post);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         return posts;
@@ -83,7 +86,7 @@ public class PostServiceImpl implements PostService {
             if (!post.getCreatedUsername().equals(createdUsername)) {
                 throw new UserNotAuthorizedException();
             } else {
-                post = new Post(new Date(), content, createdUsername);
+                post = new Post(uuid, new Date(), content, createdUsername, post.getComments());
                 fileService.savePostToFile(post);
 
             }
