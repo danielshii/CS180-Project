@@ -899,7 +899,7 @@ public class ClientApp implements Serializable {
 
                         objectOutputStream.writeObject(app);
                         objectOutputStream.flush();
-                        System.out.println("client app written");
+                        System.out.println("client app written: " + app.getActionType());
                         app = (ClientApp) objectInputStream.readObject();
 
                         if (!app.getErrorMessage().isEmpty()) {
@@ -917,7 +917,7 @@ public class ClientApp implements Serializable {
                 case 2:
                     break;
             }
-            System.out.println("test successful");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

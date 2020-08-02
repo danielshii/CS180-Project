@@ -148,7 +148,7 @@ public class ServerApp implements Runnable {
                     clientApp.setPosts(posts);
                     clientApp.setErrorMessage("");
                     objectOutputStream.writeObject(clientApp);
-                    System.out.println("object written");
+                    System.out.println("client app written");
                     break;
                 case GET_POSTS_BY_USER:
                     posts = postService.getPostsByUser(clientApp.getUsername());
