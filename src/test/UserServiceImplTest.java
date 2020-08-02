@@ -52,8 +52,8 @@ public class UserServiceImplTest {
         @Test
         public void testFields() {
             Class<?> clazz = UserServiceImpl.class;
-            Field[] fields = clazz.getFields();
-            assertTrue("Make sure the field for UserServiceImpl is correct!", fields.length == 0);
+            Field[] fields = clazz.getDeclaredFields();
+            assertTrue("Make sure the field for UserServiceImpl is correct!", fields.length == 1);
         }
 
         @Test

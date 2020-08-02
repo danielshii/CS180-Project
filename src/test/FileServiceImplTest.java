@@ -57,9 +57,9 @@ public class FileServiceImplTest {
 
         @Test
         public void testFields() {
-            Class<?> clazz = FileService.class;
-            Field[] fields = clazz.getFields();
-            assertTrue("Make sure the field for FileService is empty!", fields.length == 0);
+            Class<?> clazz = FileServiceImpl.class;
+            Field[] fields = clazz.getDeclaredFields();
+            assertTrue("Make sure the fields are correct!", fields.length == 3);
         }
 
         @Test

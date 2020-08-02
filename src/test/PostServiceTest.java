@@ -48,7 +48,7 @@ public class PostServiceTest {
         @Test
         public void testFields() {
             Class<?> clazz = PostService.class;
-            Field[] fields = clazz.getFields();
+            Field[] fields = clazz.getDeclaredFields();
             assertTrue("Make sure the field for PostService is empty!", fields.length == 0);
         }
 

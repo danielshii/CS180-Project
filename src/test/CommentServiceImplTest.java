@@ -50,9 +50,9 @@ public class CommentServiceImplTest {
 
         @Test
         public void testFields() {
-            Class<?> clazz = CommentService.class;
-            Field[] fields = clazz.getFields();
-            assertTrue("Make sure the field for CommentServiceImpl is empty!", fields.length == 0);
+            Class<?> clazz = CommentServiceImpl.class;
+            Field[] fields = clazz.getDeclaredFields();
+            assertTrue("Make sure the fields are correct!", fields.length == 1);
         }
 
         @Test

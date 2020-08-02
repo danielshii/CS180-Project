@@ -44,7 +44,7 @@ public class UserServiceTest {
         @Test
         public void testFields() {
             Class<?> clazz = UserService.class;
-            Field[] fields = clazz.getFields();
+            Field[] fields = clazz.getDeclaredFields();
             assertTrue("Make sure the field for UserService is correct!", fields.length == 0);
         }
 
