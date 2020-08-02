@@ -11,5 +11,7 @@ public interface CommentService {
     Comment createComment(UUID postUuid, String content, String createdUsername);
     void deleteComment(Comment comment, String username);
     void storeComment(Comment comment);
+    void editComment(UUID uuid, UUID postUuid, String content, String createdUsername);
+    List<Comment> getCommentsByUser(String username);
     //void deleteCommentsByUser(String username);
 }

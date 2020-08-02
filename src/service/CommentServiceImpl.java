@@ -2,14 +2,12 @@ package service;
 
 import enumeration.ObjectType;
 import exception.PostNotFoundException;
+import exception.UserNotAuthorizedException;
 import model.Comment;
 import model.Post;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class CommentServiceImpl implements CommentService {
 
@@ -25,11 +23,29 @@ public class CommentServiceImpl implements CommentService {
 
         File commentFolder = fileService.getFolder("comments");
         File[] commentFiles = commentFolder.listFiles();
-        for(File f : commentFiles)
-        {
+        Arrays.sort(commentFiles, Comparator.comparingLong(File::lastModified).reversed());
+        for (File f : commentFiles) {
             try (ObjectInputStream inputStream = new ObjectInputStream((new FileInputStream(f.getAbsolutePath())))) {
                 Comment comment = (Comment) inputStream.readObject();
                 if (comment.getPostUuid().equals(post.getUuid())) {
+                    comments.add(comment);
+                }
+            } catch (Exception e) {
+
+            }
+        }
+        return comments;
+    }
+
+    @Override
+    public List<Comment> getCommentsByUser(String username) {
+        List<Comment> comments = new ArrayList<>();
+        File directory = new File("comments");
+        File[] files = directory.listFiles();
+        for (File f : files) {
+            try (ObjectInputStream inputStream = new ObjectInputStream((new FileInputStream(f.getAbsolutePath())))) {
+                Comment comment = (Comment) inputStream.readObject();
+                if (comment.getCreatedUsername().equals(username)) {
                     comments.add(comment);
                 }
             } catch (Exception e) {
@@ -54,6 +70,24 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public void deleteComment(Comment comment, String username) {
         fileService.deleteFile(ObjectType.COMMENT, comment.getUuid().toString(), username);
+    }
+
+    @Override
+    public void editComment(UUID uuid, UUID postUuid, String content, String createdUsername) {
+        File path = new File("comments");
+        File file = new File(path.getAbsolutePath() + "/" + uuid.toString());
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file.getAbsolutePath()))) {
+            Comment comment = (Comment) inputStream.readObject();
+            if (!comment.getCreatedUsername().equals(createdUsername)) {
+                throw new UserNotAuthorizedException();
+            } else {
+                comment = new Comment(uuid, postUuid, new Date(), content, createdUsername);
+                storeComment(comment);
+
+            }
+        } catch (Exception e) {
+
+        }
     }
 
     @Override

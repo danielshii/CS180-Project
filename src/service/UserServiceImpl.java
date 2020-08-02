@@ -53,12 +53,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(String username, String password) {
-        User user = getUser(username);
+        try {
+            User user = getUser(username);
 
-        if (!user.getPassword().equals(password)) {
+            if (!user.getPassword().equals(password)) {
+                throw new InvalidUserException();
+            }
+            return user;
+        } catch (UserNotFoundException e) {
             throw new InvalidUserException();
         }
-        return user;
     }
 
     private User getUserFromFile(File file, String username) {

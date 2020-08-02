@@ -65,7 +65,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public void deleteFile(ObjectType objectType, String fileName, String username) {
         final File path = getFolder(objectType.getFolderName());
-        final File file = new File(path.getAbsolutePath() + "/" + fileName);
+        File file = new File(path.getAbsolutePath() + "\\" + fileName);
         switch (objectType) {
             case USER:
                 if (file.delete()) {
@@ -80,15 +80,15 @@ public class FileServiceImpl implements FileService {
                     if (!post.getCreatedUsername().equals(username)) {
                         throw new UserNotAuthorizedException();
                     } else {
+                        inputStream.close();
                         if (file.delete()) {
-
                         } else {
                             throw new PostNotFoundException();
                         }
                     }
 
-                } catch (Exception e) {
-
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
                 break;
 
@@ -98,14 +98,15 @@ public class FileServiceImpl implements FileService {
                     if (!comment.getCreatedUsername().equals(username)) {
                         throw new UserNotAuthorizedException();
                     } else {
+                        inputStream.close();
                         if (file.delete()) {
 
                         } else {
                             throw new CommentNotFoundException();
                         }
                     }
-                } catch (Exception e) {
-
+                } catch (IOException | ClassNotFoundException e) {
+                    e.printStackTrace();
                 }
                 break;
 
@@ -118,10 +119,36 @@ public class FileServiceImpl implements FileService {
     @Override
     public void deleteAllFilesByUser(User user) {
         // Delete all Comment files
-        deleteAllPostOrCommentFilesByUser(user, ObjectType.COMMENT);
+        File path = getFolder(COMMENT_FOLDER);
+        path.mkdir();
+        File[] commentFiles = path.listFiles();
+        for (File file : commentFiles) {
+            try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file.getAbsolutePath()))) {
+                Comment comment = (Comment) inputStream.readObject();
+                if (comment.getCreatedUsername().equals(user.getUsername())) {
+                    inputStream.close();
+                    file.delete();
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
 
         // Delete all Post files
-        deleteAllPostOrCommentFilesByUser(user, ObjectType.POST);
+        path = getFolder(POST_FOLDER);
+        path.mkdir();
+        File[] postFiles = path.listFiles();
+        for (File file : postFiles) {
+            try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file.getAbsolutePath()))) {
+                Post post = (Post) inputStream.readObject();
+                if (post.getCreatedUsername().equals(user.getUsername())) {
+                    inputStream.close();
+                    file.delete();
+                }
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
 
         // Delete the User file
         deleteFile(ObjectType.USER, user.getUsername(), user.getUsername());
@@ -134,24 +161,5 @@ public class FileServiceImpl implements FileService {
         return file;
     }
 
-    private void deleteAllPostOrCommentFilesByUser(User user, ObjectType objectType) {
-        File folder = null;
-        switch (objectType) {
-            case POST:
-                folder = getFolder(POST_FOLDER);
-                break;
 
-            case COMMENT:
-                folder = getFolder(COMMENT_FOLDER);
-                break;
-
-            default:
-                throw new InvalidObjectTypeException(objectType);
-        }
-
-        final File[] files = folder.listFiles();
-        for (final File file : files) {
-            deleteFile(objectType, file.getName(), user.getUsername());
-        }
-    }
 }

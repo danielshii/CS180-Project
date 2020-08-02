@@ -10,6 +10,6 @@ public interface PostService {
     List<Post> getPostsByUser(String username);
     Post createPost(String content, String createdUsername);
     void deletePostsByUser(String username);
-    void deletePost(UUID uuid, String username);
+    void deletePost(Post post, String username);
     void editPost(UUID uuid, String content, String createdUsername);
 }

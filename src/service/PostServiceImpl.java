@@ -2,6 +2,7 @@ package service;
 
 import enumeration.ObjectType;
 import exception.UserNotAuthorizedException;
+import model.Comment;
 import model.Post;
 
 import java.io.*;
@@ -11,8 +12,11 @@ public class PostServiceImpl implements PostService {
 
     private final FileService fileService;
 
+    private final CommentService commentService;
+
     public PostServiceImpl() {
         this.fileService = new FileServiceImpl();
+        this.commentService = new CommentServiceImpl();
     }
 
     @Override
@@ -21,7 +25,7 @@ public class PostServiceImpl implements PostService {
         File directory = new File("posts");
         directory.mkdir();
         File[] files = directory.listFiles();
-        Arrays.sort(files, Comparator.comparingLong(File::lastModified));
+        Arrays.sort(files, Comparator.comparingLong(File::lastModified).reversed());
 
 
         for (File f : files) {
@@ -60,6 +64,7 @@ public class PostServiceImpl implements PostService {
         post.setCreatedUsername(createdUsername);
         post.setUuid(UUID.randomUUID());
         post.setCreatedDate(new Date());
+        post.setComments(new ArrayList<>());
         fileService.savePostToFile(post);
         return post;
     }
@@ -68,13 +73,17 @@ public class PostServiceImpl implements PostService {
     public void deletePostsByUser(String username) {
         List<Post> posts = getPostsByUser(username);
         for (Post p : posts) {
-            deletePost(p.getUuid(), username);
+            deletePost(p, username);
         }
     }
 
     @Override
-    public void deletePost(UUID uuid, String username) {
-        fileService.deleteFile(ObjectType.POST, uuid.toString(), username);
+    public void deletePost(Post post, String username) {
+        List<Comment> comments = commentService.getCommentsByPost(post);
+        for (Comment c : comments) {
+            commentService.deleteComment(c, username);
+        }
+        fileService.deleteFile(ObjectType.POST, post.getUuid().toString(), username);
     }
 
     @Override
