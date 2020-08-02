@@ -11,42 +11,46 @@ For our project, we decided to go with option one and make a social media postin
 
 ## Classes
 * ActionType
-  *
+  * Info
 * ObjectType
-  *
+  * Info
 * CommentNotFoundException
-  *
+  * Info
 * DuplicateUsernameException
-  *
+  * Info
 * InvalidObjectTypeException
-  *
+  * Info
 * InvalidUserException
-  *
+  * Info
 * PostNotFoundException
-  *
+  * Info
 * UserNotAuthorizedException
-  *
+  * Info
 * UserNotFoundException
-  *
+  * Info
 * Comment
-  *
+  * Info
 * User
-  *
+  * Info
 * Post
-  *
+  * Info
 * CommentService
-  *
+  * Info
 * UserService
-  *
+  * Info
 * PostService
-  *
+  * Info
 * FileService
-  *
+  * Info
 * CommentServiceImpl
-  *
+  * Info
 * UserServiceImpl
-  *
+  * Info
 * PostServiceImpl
-  *
+  * Info
 * FileServiceImpl
-  *
+  * Info
+  
+## Testing
+
+## Contributors
