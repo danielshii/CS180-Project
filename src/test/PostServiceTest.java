@@ -12,6 +12,7 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import service.PostService;
 import service.PostServiceImpl;
+import service.UserServiceImpl;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -50,6 +51,13 @@ public class PostServiceTest {
             Field[] fields = clazz.getFields();
             assertTrue("Make sure the field for PostService is empty!", fields.length == 0);
         }
+
+        @Test
+        public void testExistsAndInheritsFromObject() {
+            Class<?> clazz = PostService.class;
+            assertTrue("Ensure that your file PostService.java extends Objects!", Object.class.isInstance(clazz));
+        }
+
 
         @Test
         public void testIsInterfaceHasAllMethods() {

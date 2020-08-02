@@ -10,6 +10,7 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import service.UserService;
+import service.UserServiceImpl;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -46,6 +47,13 @@ public class UserServiceTest {
             Field[] fields = clazz.getFields();
             assertTrue("Make sure the field for UserService is correct!", fields.length == 0);
         }
+
+        @Test
+        public void testExistsAndInheritsFromObject() {
+            Class<?> clazz = UserService.class;
+            assertTrue("Ensure that your file UserService.java extends Objects!", Object.class.isInstance(clazz));
+        }
+
 
         @Test
         public void testIsInterfaceHasAllMethods() {

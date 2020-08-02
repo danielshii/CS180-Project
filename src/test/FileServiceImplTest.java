@@ -63,6 +63,13 @@ public class FileServiceImplTest {
         }
 
         @Test
+        public void testExistsAndInheritsFromObject() {
+            Class<?> clazz = FileServiceImpl.class;
+            assertTrue("Ensure that your file FileServiceImpl.java extends Objects!", Object.class.isInstance(clazz));
+        }
+
+
+        @Test
         public void testHasAllMethods() {
             Method getFile;
 

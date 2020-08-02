@@ -10,6 +10,7 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import service.CommentService;
 import service.CommentServiceImpl;
+import service.UserServiceImpl;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -48,6 +49,13 @@ public class CommentServiceTest {
             Field[] fields = clazz.getFields();
             assertTrue("Make sure the field for CommentService is empty!", fields.length == 0);
         }
+
+        @Test
+        public void testExistsAndInheritsFromObject() {
+            Class<?> clazz = CommentService.class;
+            assertTrue("Ensure that your file CommentService.java extends Objects!", Object.class.isInstance(clazz));
+        }
+
 
         @Test
         public void testIsInterfaceHasAllMethods() {

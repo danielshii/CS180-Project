@@ -56,6 +56,13 @@ public class CommentServiceImplTest {
         }
 
         @Test
+        public void testExistsAndInheritsFromObject() {
+            Class<?> clazz = CommentServiceImpl.class;
+            assertTrue("Ensure that your file CommentServiceImpl.java extends Objects!", Object.class.isInstance(clazz));
+        }
+
+
+        @Test
         public void testHasAllMethods() {
             Method getCommentsByPost;
             Method createComment;

@@ -9,8 +9,9 @@ import org.junit.Test;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
-import service.PostService;
 import service.PostServiceImpl;
+import service.PostServiceImpl;
+import service.UserServiceImpl;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -38,25 +39,26 @@ public class PostServiceImplTest {
 
 
     public static class TestCase {
-        private PostService postService;
+        private PostServiceImpl postService;
 
         @Before
         public void start() {
             postService = new PostServiceImpl();
         }
 
-
         @Test
         public void testExistsAndInheritsFromObject() {
-            Class<?> clazz = PostService.class;
-            assertTrue("Ensure that your file PostService.java extends Objects!", clazz.isInstance(Object.class));
+            Class<?> clazz = PostServiceImpl.class;
+            assertTrue("Ensure that your file PostServiceImpl.java extends Objects!", Object.class.isInstance(clazz));
         }
+
+
 
         @Test
         public void testFields() {
-            Class<?> clazz = PostService.class;
+            Class<?> clazz = PostServiceImpl.class;
             Field[] fields = clazz.getFields();
-            assertTrue("Make sure the field for PostService is empty!", fields.length == 0);
+            assertTrue("Make sure the field for PostServiceImpl is empty!", fields.length == 0);
         }
 
         @Test
@@ -69,26 +71,26 @@ public class PostServiceImplTest {
             Method editPost;
 
             try {
-                getAllPosts = PostService.class.getDeclaredMethod("getAllPosts", null);
+                getAllPosts = PostServiceImpl.class.getDeclaredMethod("getAllPosts", null);
                 if (!getAllPosts.getReturnType().equals(List.class)) {
-                    fail("Ensure that your getAllPosts() method in PostService return type is of type " +
+                    fail("Ensure that your getAllPosts() method in PostServiceImpl return type is of type " +
                             "List!");
                     return;
                 }
             } catch (NoSuchMethodException e) {
-                fail("Ensure that you have a method called getAllPosts() in the PostService interface!");
+                fail("Ensure that you have a method called getAllPosts() in the PostServiceImpl interface!");
                 return;
             }
 
             try {
-                getPostsByUser = PostService.class.getDeclaredMethod("getPostsByUser", String.class);
+                getPostsByUser = PostServiceImpl.class.getDeclaredMethod("getPostsByUser", String.class);
                 if (!getPostsByUser.getReturnType().equals(List.class)) {
-                    fail("Ensure that your getPostsByUser() method in PostService return type is of type " +
+                    fail("Ensure that your getPostsByUser() method in PostServiceImpl return type is of type " +
                             "List!");
                     return;
                 }
             } catch (NoSuchMethodException e) {
-                fail("Ensure that you have a method called getPostsByUser() in the PostService interface!");
+                fail("Ensure that you have a method called getPostsByUser() in the PostServiceImpl interface!");
                 return;
             }
 
@@ -96,26 +98,26 @@ public class PostServiceImplTest {
                 Class[] cArg = new Class[2];
                 cArg[0] = String.class;
                 cArg[1] = String.class;
-                createPost = PostService.class.getDeclaredMethod("createPost", cArg);
+                createPost = PostServiceImpl.class.getDeclaredMethod("createPost", cArg);
                 if (!createPost.getReturnType().equals(Post.class)) {
-                    fail("Ensure that your createPost() method in PostService return type is of type " +
+                    fail("Ensure that your createPost() method in PostServiceImpl return type is of type " +
                             "Post!");
                     return;
                 }
             } catch (NoSuchMethodException e) {
-                fail("Ensure that you have a method called createPost() in the PostService interface!");
+                fail("Ensure that you have a method called createPost() in the PostServiceImpl interface!");
                 return;
             }
 
             try {
-                deletePostsByUser = PostService.class.getDeclaredMethod("deletePostsByUser", String.class);
+                deletePostsByUser = PostServiceImpl.class.getDeclaredMethod("deletePostsByUser", String.class);
                 if (!deletePostsByUser.getReturnType().equals(void.class)) {
-                    fail("Ensure that your deletePostsByUser() method in PostService return type is of type " +
+                    fail("Ensure that your deletePostsByUser() method in PostServiceImpl return type is of type " +
                             "void!");
                     return;
                 }
             } catch (NoSuchMethodException e) {
-                fail("Ensure that you have a method called deletePostsByUser() in the PostService interface!");
+                fail("Ensure that you have a method called deletePostsByUser() in the PostServiceImpl interface!");
                 return;
             }
 
@@ -123,14 +125,14 @@ public class PostServiceImplTest {
                 Class[] cArg = new Class[2];
                 cArg[0] = Post.class;
                 cArg[1] = String.class;
-                deletePost = PostService.class.getDeclaredMethod("deletePost", cArg);
+                deletePost = PostServiceImpl.class.getDeclaredMethod("deletePost", cArg);
                 if (!deletePost.getReturnType().equals(void.class)) {
-                    fail("Ensure that your deletePost() method in PostService return type is of type " +
+                    fail("Ensure that your deletePost() method in PostServiceImpl return type is of type " +
                             "void!");
                     return;
                 }
             } catch (NoSuchMethodException e) {
-                fail("Ensure that you have a method called deletePost() in the PostService interface!");
+                fail("Ensure that you have a method called deletePost() in the PostServiceImpl interface!");
                 return;
             }
 
@@ -139,14 +141,14 @@ public class PostServiceImplTest {
                 cArg[0] = UUID.class;
                 cArg[1] = String.class;
                 cArg[2] = String.class;
-                editPost = PostService.class.getDeclaredMethod("editPost", cArg);
+                editPost = PostServiceImpl.class.getDeclaredMethod("editPost", cArg);
                 if (!editPost.getReturnType().equals(void.class)) {
-                    fail("Ensure that your editPost() method in PostService return type is of type " +
+                    fail("Ensure that your editPost() method in PostServiceImpl return type is of type " +
                             "void!");
                     return;
                 }
             } catch (NoSuchMethodException e) {
-                fail("Ensure that you have a method called editPost() in the PostService interface!");
+                fail("Ensure that you have a method called editPost() in the PostServiceImpl interface!");
                 return;
             }
         }

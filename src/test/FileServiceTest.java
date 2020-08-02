@@ -12,6 +12,7 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import service.FileService;
 import service.FileServiceImpl;
+import service.UserServiceImpl;
 
 import java.io.File;
 import java.lang.reflect.Field;
@@ -51,6 +52,13 @@ public class FileServiceTest {
             Field[] fields = clazz.getFields();
             assertTrue("Make sure the field for FileService is empty!", fields.length == 0);
         }
+
+        @Test
+        public void testExistsAndInheritsFromObject() {
+            Class<?> clazz = FileService.class;
+            assertTrue("Ensure that your file FileService.java extends Objects!", Object.class.isInstance(clazz));
+        }
+
 
         @Test
         public void testIsInterfaceHasAllMethods() {

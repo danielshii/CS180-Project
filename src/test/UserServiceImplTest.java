@@ -46,7 +46,7 @@ public class UserServiceImplTest {
         @Test
         public void testExistsAndInheritsFromObject() {
             Class<?> clazz = UserServiceImpl.class;
-            assertTrue("Ensure that your file UserServiceImpl.java extends Objects!", clazz.isInstance(Object.class));
+            assertTrue("Ensure that your file UserServiceImpl.java extends Objects!", Object.class.isInstance(clazz));
         }
 
         @Test
