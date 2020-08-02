@@ -11,46 +11,51 @@ For our project, we decided to go with option one and make a social media postin
 
 ## Classes
 * ActionType
-  * Info
+  * Used by client to tell the server what action to take
 * ObjectType
-  * Info
+  * Tells the file service which folder to access
 * CommentNotFoundException
-  * Info
+  * Thrown when comment can't be found
 * DuplicateUsernameException
-  * Info
+  * Thrown when a user tries to create an account with a username that is already associated with an existing account
 * InvalidObjectTypeException
-  * Info
+  * Thrown when an object is not of the valid type
 * InvalidUserException
-  * Info
+  * Thrown when a usre incorrectly enters login info
 * PostNotFoundException
-  * Info
+  * Thrown when a post cannot be found
 * UserNotAuthorizedException
-  * Info
+  * Thrown when a user tries to change a post or comment that isn't theirs
 * UserNotFoundException
-  * Info
+  * Thrown when a user isn't found
 * Comment
-  * Info
+  * Object representing a comment
 * User
-  * Info
+  * Object representing a user. Includes username and password
 * Post
-  * Info
+  * Object representing a post. Contains timestamp, author, and own list of comments
 * CommentService
-  * Info
+  * Interface for a comment service
 * UserService
-  * Info
+  * Interface for a user service
 * PostService
-  * Info
+  * Interface for a post service
 * FileService
-  * Info
+  * Interface for a file service
 * CommentServiceImpl
-  * Info
+  * Implements comment service. Controls comment files
 * UserServiceImpl
-  * Info
+  * Implements User service. Controls user files
 * PostServiceImpl
-  * Info
+  * Implements Post service. Controls post files
 * FileServiceImpl
-  * Info
+  * Implements file service. Controls all files within the program. Used by the other three services
   
 ## Testing
 
 ## Contributors
+Daniel Shi
+Sam Rothschild
+Connor Proudman
+Omar Sadiek
+Harnaaz Preet Singh
