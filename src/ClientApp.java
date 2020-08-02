@@ -860,12 +860,20 @@ public class ClientApp implements Serializable {
             String password = "";
             User user = null;
             switch (choice) {
-                case 0:
+                case 0: //create account
                     while (true) {
 
                         username = JOptionPane.showInputDialog(null, "Create a username", "Create Account", JOptionPane.PLAIN_MESSAGE);
+                        if (username == null) {
+                            //user clicks cancel button
+                            return;
+                        }
                         password = JOptionPane.showInputDialog(null, "Create a password", "Create Account", JOptionPane.PLAIN_MESSAGE);
-                        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+                        if (password == null) {
+                            //user clicks cancel button
+                            return;
+                        }
+                        if (username.isEmpty() || password.isEmpty()) {
                             JOptionPane.showMessageDialog(null, "Username and/or password cannot be empty!", "ERROR", JOptionPane.ERROR_MESSAGE);
                             app.createNewConnection();
                             continue;
@@ -888,11 +896,19 @@ public class ClientApp implements Serializable {
                         }
                     }
                     break;
-                case 1:
+                case 1: //login
                     while (true) {
 
                         username = JOptionPane.showInputDialog(null, "Enter username", "Log In", JOptionPane.PLAIN_MESSAGE);
+                        if (username == null) {
+                            //user clicks cancel button
+                            return;
+                        }
                         password = JOptionPane.showInputDialog(null, "Enter password", "Log In", JOptionPane.PLAIN_MESSAGE);
+                        if (password == null) {
+                            //user clicks cancel button
+                            return;
+                        }
                         user = new User(username, password);
                         app.setCurrentUser(user);
                         app.setActionType(ActionType.LOGIN_USER);
@@ -914,7 +930,7 @@ public class ClientApp implements Serializable {
                     }
 
                     break;
-                case 2:
+                case 2: //quit
                     break;
             }
 
