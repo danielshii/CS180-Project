@@ -46,8 +46,7 @@ public class UserServiceImpl implements UserService {
         fileService.deleteAllFilesByUser(user);
     }
 
-    @Override
-    public void storeInFile(User user) {
+    private void storeInFile(User user) {
         fileService.saveUserToFile(user);
     }
 

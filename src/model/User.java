@@ -57,8 +57,28 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    private Object writeReplace()
-    {
+    private Object writeReplace() {
         return new SerializationProxy(this);
+    }
+
+    @Override
+    public boolean equals(Object user) {
+
+        // If the object is compared with itself then return true   
+        if (user == this) {
+            return true;
+        } 
+  
+        /* Check if o is an instance of User or not 
+          "null instanceof [type]" also returns false */
+        if (!(user instanceof User)) {
+            return false;
+        }
+
+        // typecast o to User so that we can compare data members  
+        User u = (User) user;
+        return Objects.equals(this.getUsername(), u.getUsername()) && Objects.equals(this.getPassword(), u.getPassword());
+
+
     }
 }
