@@ -51,47 +51,13 @@ public class UserServiceTest {
 
 
     public static class TestCase {
-        private final PrintStream originalOutput = System.out;
-        private final InputStream originalSysin = System.in;
-
-        @SuppressWarnings("FieldCanBeLocal")
-        private ByteArrayInputStream testIn;
-
-        @SuppressWarnings("FieldCanBeLocal")
-        private ByteArrayOutputStream testOut;
+        private UserService userService;
 
         @Before
-        public void outputStart() {
-            testOut = new ByteArrayOutputStream();
-            System.setOut(new PrintStream(testOut));
+        public void start() {
+            userService = new UserServiceImpl();
         }
 
-        @After
-        public void restoreInputAndOutput() {
-            System.setIn(originalSysin);
-            System.setOut(originalOutput);
-        }
-
-        private String getOutput() {
-            return testOut.toString();
-        }
-
-        @SuppressWarnings("SameParameterValue")
-        private void receiveInput(String str) {
-            testIn = new ByteArrayInputStream(str.getBytes());
-            System.setIn(testIn);
-        }
-
-        private static String multiline(String... inputLines) {
-            StringBuilder sb = new StringBuilder();
-
-            for (String line : inputLines) {
-                sb.append(line);
-                sb.append(System.lineSeparator());
-            }
-
-            return sb.toString();
-        }
 
         @Test
         public void testExistsAndInheritsFromObject() {
@@ -174,7 +140,7 @@ public class UserServiceTest {
         public void testCreateUserSuccess() {
             String username = "testUser4";
             String password = "pass";
-            UserService userService = new UserServiceImpl();
+
             User user = userService.createUser(username, password);
             User expectedUser = getDummyUser(username, password);
             assertTrue("Ensure the createUser() method returns the expected user!", user.equals(expectedUser));
@@ -185,7 +151,7 @@ public class UserServiceTest {
             try {
                 String username = "testUser4";
                 String password = "pass";
-                UserService userService = new UserServiceImpl();
+
                 User user = userService.createUser(username, password);
             } catch (Exception e) {
                 assertTrue("Ensure DuplicateNameException is thrown!", e instanceof DuplicateUsernameException);
@@ -196,7 +162,7 @@ public class UserServiceTest {
         public void testLoginSuccess() {
             String username = "testUser4";
             String password = "pass";
-            UserService userService = new UserServiceImpl();
+
             User user = userService.login(username, password);
             User expectedUser = getDummyUser(username, password);
             assertTrue("Ensure the login() method returns the expected user!", user.equals(expectedUser));
@@ -207,7 +173,7 @@ public class UserServiceTest {
             try {
                 String username = "testUser4";
                 String password = "incorrect password";
-                UserService userService = new UserServiceImpl();
+
                 User user = userService.login(username, password);
             } catch (Exception e) {
                 assertTrue("Ensure InvalidUserException is thrown!", e instanceof InvalidUserException);
@@ -218,7 +184,7 @@ public class UserServiceTest {
         public void testGetUserSuccess() {
             String username = "testUser4";
             String password = "pass";
-            UserService userService = new UserServiceImpl();
+
             User user = userService.getUser(username);
             User expectedUser = getDummyUser(username, password);
             assertTrue("Ensure the getUser() method returns the expected user!", user.equals(expectedUser));
@@ -228,7 +194,7 @@ public class UserServiceTest {
         public void testGetUserFailure() {
             try {
                 String username = "nonexistent username";
-                UserService userService = new UserServiceImpl();
+
                 User user = userService.getUser(username);
             } catch (Exception e) {
                 assertTrue("Ensure UserNotFoundException is thrown!", e instanceof UserNotFoundException);
@@ -240,7 +206,7 @@ public class UserServiceTest {
             String username = "testUser4";
             String password = "pass";
             User deletedUser = getDummyUser(username, password);
-            UserService userService = new UserServiceImpl();
+
             userService.deleteUser(deletedUser);
             try {
                 User nonExistUser = userService.getUser(username);
@@ -254,7 +220,7 @@ public class UserServiceTest {
             try {
                 String username = "nonexistent user";
                 String password = "incorrect password";
-                UserService userService = new UserServiceImpl();
+
                 userService.deleteUser(getDummyUser(username, password));
             } catch (Exception e) {
                 assertTrue("Ensure UserNotFoundException is thrown!", e instanceof UserNotFoundException);
