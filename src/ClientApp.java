@@ -891,8 +891,8 @@ public class ClientApp implements Serializable {
                 case 1:
                     while (true) {
 
-                        username = JOptionPane.showInputDialog(null, "Enter username", "Create Account", JOptionPane.PLAIN_MESSAGE);
-                        password = JOptionPane.showInputDialog(null, "Enter password", "Create Account", JOptionPane.PLAIN_MESSAGE);
+                        username = JOptionPane.showInputDialog(null, "Enter username", "Log In", JOptionPane.PLAIN_MESSAGE);
+                        password = JOptionPane.showInputDialog(null, "Enter password", "Log In", JOptionPane.PLAIN_MESSAGE);
                         user = new User(username, password);
                         app.setCurrentUser(user);
                         app.setActionType(ActionType.LOGIN_USER);

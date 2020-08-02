@@ -34,7 +34,6 @@ public class FileServiceImpl implements FileService {
             //outputStream.writeUTF("\n");
             outputStream.flush();
         } catch (IOException e) {
-
         }
     }
 
