@@ -344,9 +344,11 @@ public class ClientApp implements Serializable {
 
                                     viewPostsByUser.setText("View all posts by " + posts.get(postIndex).getCreatedUsername());
                                     actionPanel.add(viewPostsByUser);
+                                    viewPostsByUser.setVisible(true);
 
                                 } else {
                                     postLabel.setText("No one has posted anything. Be the first to post!");
+                                    viewPostsByUser.setVisible(false);
                                 }
                             } else {
                                 JOptionPane.showMessageDialog(null, app.getErrorMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -365,18 +367,20 @@ public class ClientApp implements Serializable {
 
                     } else if (e.getSource() == addPost) {
                         String content = JOptionPane.showInputDialog(null, "Write your post", "Add Post", JOptionPane.QUESTION_MESSAGE);
-                        app.setActionType(ActionType.CREATE_POST);
-                        app.setPostContent(content);
-                        objectOutputStream.writeObject(app);
-                        objectOutputStream.flush();
-                        app = (ClientApp) objectInputStream.readObject();
-                        Post newPost = app.getCurrentPost();
-                        posts = app.getPosts();
+                        if (content != null) {
+                            app.setActionType(ActionType.CREATE_POST);
+                            app.setPostContent(content);
+                            objectOutputStream.writeObject(app);
+                            objectOutputStream.flush();
+                            app = (ClientApp) objectInputStream.readObject();
+                            Post newPost = app.getCurrentPost();
+                            posts = app.getPosts();
 
-                        postIndex = 0;
-                        postLabel.setText(newPost.toString());
-                        viewPostsByUser.setText("View all posts by " + posts.get(postIndex).getCreatedUsername());
-                        actionPanel.add(viewPostsByUser);
+                            postIndex = 0;
+                            postLabel.setText(newPost.toString());
+                            viewPostsByUser.setText("View all posts by " + posts.get(postIndex).getCreatedUsername());
+                            actionPanel.add(viewPostsByUser);
+                        }
 
 
                     } else if (e.getSource() == viewPostsByUser) {
@@ -392,8 +396,10 @@ public class ClientApp implements Serializable {
                         if (posts.size() > 0) {
                             postLabel.setText(posts.get(0).toString());
                             viewPostsByUser.setText("View all posts by " + posts.get(0).getCreatedUsername());
+                            viewPostsByUser.setVisible(true);
                         } else {
                             postLabel.setText("No one has posted anything. Be the first to post!");
+                            viewPostsByUser.setVisible(false);
                         }
                     } else if (e.getSource() == logout) {
                         postFrame.dispose();
@@ -457,8 +463,10 @@ public class ClientApp implements Serializable {
                         app.setCurrentComment(comments.get(0));
                         commentLabel.setText(comments.get(0).toString());
                         viewCommentsByUser.setText("View all comments by " + comments.get(0).getCreatedUsername());
+                        viewCommentsByUser.setVisible(true);
                     } else {
                         commentLabel.setText("No one has commented yet. Be the first to comment!");
+                        viewCommentsByUser.setVisible(false);
                     }
                     commentLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -563,18 +571,20 @@ public class ClientApp implements Serializable {
                                 } else if (e.getSource() == addComment) {
                                     //opens a new window with all of the post's comments
                                     String content = JOptionPane.showInputDialog(null, "Comment on this post", "Comment", JOptionPane.PLAIN_MESSAGE);
-                                    app.setActionType(ActionType.ADD_COMMENT);
-                                    app.setPostContent(content);
-                                    objectOutputStream.writeObject(app);
-                                    objectOutputStream.flush();
-                                    app = (ClientApp) objectInputStream.readObject();
+                                    if (content != null) {
+                                        app.setActionType(ActionType.ADD_COMMENT);
+                                        app.setPostContent(content);
+                                        objectOutputStream.writeObject(app);
+                                        objectOutputStream.flush();
+                                        app = (ClientApp) objectInputStream.readObject();
 
-                                    comments = app.getComments();
-                                    commentIndex = 0;
-                                    commentLabel.setText(comments.get(0).toString());
-                                    viewCommentsByUser.setText("View all comments by " + comments.get(commentIndex).getCreatedUsername());
-                                    actionPanel.add(viewCommentsByUser);
-                                    actionPanel.repaint();
+                                        comments = app.getComments();
+                                        commentIndex = 0;
+                                        commentLabel.setText(comments.get(0).toString());
+                                        viewCommentsByUser.setText("View all comments by " + comments.get(commentIndex).getCreatedUsername());
+                                        actionPanel.add(viewCommentsByUser);
+                                        actionPanel.repaint();
+                                    }
 
                                 } else if (e.getSource() == viewCommentsByUser) {
                                     currentComment = comments.get(commentIndex);
@@ -592,8 +602,10 @@ public class ClientApp implements Serializable {
                                         app.setCurrentComment(comments.get(0));
                                         commentLabel.setText(comments.get(0).toString());
                                         viewCommentsByUser.setText("View all comments by " + comments.get(commentIndex).getCreatedUsername());
+                                        viewCommentsByUser.setVisible(true);
                                     } else {
                                         commentLabel.setText("No one has commented yet. Be the first to comment!");
+                                        viewCommentsByUser.setVisible(false);
                                     }
                                 }
                             } catch (IOException | ClassNotFoundException exception) {
