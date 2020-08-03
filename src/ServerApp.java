@@ -209,7 +209,7 @@ public class ServerApp implements Runnable {
                 case GET_COMMENTS_BY_USER:
                     comments = commentService.getCommentsByUser(clientApp.getUsername());
                     clientApp.setErrorMessage("");
-                    clientApp.setComments(comments);
+                    clientApp.setUserComments(comments);
                     if (comments.size() > 0) {
                         clientApp.setCurrentComment(comments.get(0));
                     } else {

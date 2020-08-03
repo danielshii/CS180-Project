@@ -557,10 +557,12 @@ public class ClientApp implements Serializable {
                                             if (comments.isEmpty()) {
                                                 commentLabel.setText("No one has commented yet. Be the first to comment!");
                                                 actionPanel.remove(viewCommentsByUser);
+                                                viewCommentsByUser.setVisible(false);
                                             } else {
                                                 app.setCurrentComment(comments.get(0));
                                                 commentLabel.setText(comments.get(0).toString());
                                                 viewCommentsByUser.setText("View all comments by " + comments.get(commentIndex).getCreatedUsername());
+                                                viewCommentsByUser.setVisible(true);
                                             }
                                             actionPanel.repaint();
                                             commentIndex = 0;
@@ -778,7 +780,7 @@ public class ClientApp implements Serializable {
 
                     app.setActionType(ActionType.GET_COMMENTS_BY_USER);
                     objectOutputStream.writeObject(app);
-
+                    objectOutputStream.flush();
                     app = (ClientApp) objectInputStream.readObject();
                     userComments = app.getUserComments();
 
@@ -828,7 +830,7 @@ public class ClientApp implements Serializable {
                                 } else if (e.getSource() == refreshComments) {
                                     app.setActionType(ActionType.GET_COMMENTS_BY_USER);
                                     objectOutputStream.writeObject(app);
-
+                                    objectOutputStream.flush();
                                     app = (ClientApp) objectInputStream.readObject();
                                     userComments = app.getUserComments();
                                     commentIndexByUser = 0;
@@ -847,6 +849,9 @@ public class ClientApp implements Serializable {
 
                     previous.addActionListener(actionListener);
                     next.addActionListener(actionListener);
+                    refreshComments.addActionListener(actionListener);
+
+                    actionPanel.add(refreshComments);
 
                     container.add(previous, BorderLayout.WEST);
                     container.add(next, BorderLayout.EAST);
