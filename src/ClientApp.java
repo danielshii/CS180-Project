@@ -391,6 +391,7 @@ public class ClientApp implements Serializable {
                         postIndex = 0;
                         if (posts.size() > 0) {
                             postLabel.setText(posts.get(0).toString());
+                            viewPostsByUser.setText("View all posts by " + posts.get(0).getCreatedUsername());
                         } else {
                             postLabel.setText("No one has posted anything. Be the first to post!");
                         }
@@ -583,6 +584,7 @@ public class ClientApp implements Serializable {
                                     app.setActionType(ActionType.GET_COMMENTS);
                                     objectOutputStream.writeObject(app);
                                     objectOutputStream.flush();
+                                    app = (ClientApp) objectInputStream.readObject();
                                     comments = app.getComments();
 
                                     commentIndex = 0;
@@ -820,6 +822,7 @@ public class ClientApp implements Serializable {
                                     commentIndexByUser = 0;
                                     if (userComments.size() > 0) {
                                         commentLabel.setText(userComments.get(0).toString());
+
                                     } else {
                                         commentLabel.setText(username + " does not have any comments.");
                                     }
