@@ -57,27 +57,70 @@ For our project, we decided to go with option one and make a social media postin
   
 ## Testing
 * For **CommentServiceImpl**
-  * Info
+  * Ensures that the fields are empty
+  * Ensures that all methods exist
+  * Ensures comments are fetched from the proper post
+  * Ensures comments are able to be created successfully
+  * Ensures comments are deleted successfully
+  * Ensures comments are stored properly
+  * Ensures comments are edited correctly and a UserNotAuthorizedException is thrown in the proper case
+  * Ensures the proper comments are fetched for the proper user
 * For **CommentService**
-  * Info
+  * Ensures that the fields are empty
+  * Ensures that all methods exist
 * For **FileServiceImpl**
-  * Info
+  * Ensures that the fields are empty
+  * Ensures that all methods exist
+  * Ensures that files are fetched properly
+  * Ensures that a created user is successfully saved to a file
+  * Ensures that a created post is successfully saved to a file
+  * Ensures that a created comment is successfully saved to a file
+  * Ensures that files are deleted properly
 * For **FileService**
-  * Info
+  * Ensures that the fields are empty
+  * Ensures that all methods exist
 * For **PostServiceImpl**
-  * Info
+  * Ensures that the fields are empty
+  * Ensures that all methods exist
+  * Ensures that a post is successfully created
+  * Ensures that posts are fetched properly
+  * Ensures that posts are deleted properly
+  * Ensures that all posts are fetched from specific users properly
+  * Ensures posts are edited correctly and a UserNotAuthorizedException is thrown in the proper case
 * For **PostService**
-  * Info
+  * Ensures that all the fields are empty
+  * Ensures that all methods exist
 * For **UserServiceImpl**
-  * Info
+  * Ensures that all the fields are empty
+  * Ensures that all methods exist
+  * Ensures that a user is created successfully and a DuplicateUserException is thrown in the proper case
+  * Ensures that a user can login successfully and an InvalidUserException is thrown in the proper case
+  * Ensures that users can be fetched successfully and a UserNotFoundException is thrown in the proper case
+  * Ensures that users are deleted properly
 * For **UserService**
-  * Info
+  * Ensures that all the fields are empty
+  * Ensures that all methods exist
 * For **Comment**
-  * Info
+  * Ensures that the class exists and inherits from Object
+  * Ensures that all the fields are correct
 * For **User**
-  * Info
+  * Ensures that the class exists and inherits from Object
+  * Ensures that all the fields are correct
 * For **Post**
-  * Info
+  * Ensures that the class exists and inherits from Object
+  * Ensures that all the fields are correct
+* For **GUI Testing**
+  1. Pressed quit to ensure the client stopped
+  2. Pressed create user and created a user to ensure user creation was successful
+  3. Added a post to ensure the post was successful
+  4. Edited the post to ensure the post was successfully edited
+  5. Pressed view comments and added a comment to ensure that the comment was successful
+  6. Edited the comment to ensure the comment was successfully edited
+  7. Deleted the comment to ensure the comment was successfully deleted
+  8. Viewed all posts by my user to ensure a seperate post window popped up and the next and previous post buttons worked
+  9. Deleted the post to ensure the post was successfully deleted
+  10. Logged out and logged back in to ensure that user data was successfully stored
+  11. Deleted the account to ensure the user data was successfully deleted
 
 ## Contributors
 * Daniel Shi
